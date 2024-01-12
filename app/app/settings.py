@@ -147,6 +147,9 @@ CACHES = {
     },
 }
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'vol/')
+MEDIA_URL = '/media/'
+
 BROKER_URL = os.getenv('REDIS_URL')
 CELERY_RESULT_BACKEND = os.getenv('REDIS_URL')
 CELERY_ACCEPT_CONTENT = ['application/json']
