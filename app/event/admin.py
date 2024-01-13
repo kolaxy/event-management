@@ -12,7 +12,9 @@ class OrganizationAdmin(admin.ModelAdmin):
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
     list_display = ("title", "description", "date", "preview_image")
-
+    search_fields = ("title", "description", "date")
+    list_filter = ("date", "organizations")
+    
     def preview_image(self, obj):
         if obj.image:
             return format_html(f'<img src="{obj.image.url}" width="25" height="25" />')
