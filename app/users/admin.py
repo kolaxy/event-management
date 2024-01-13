@@ -8,14 +8,16 @@ admin.site.site_header = 'event-management admin'
 @admin.register(User)
 class MainUserAdmin(UserAdmin):
     change_user_password_template = None
-    list_display = ('email', 'phone_number', 'added_at',)
+    list_display = ('email', 'phone_number', 'added_at', 'id')
     list_filter = ('added_at',)
     search_fields = ('email',)
     ordering = ('-added_at',)
     filter_horizontal = ('groups', 'user_permissions',)
+    readonly_fields = ('id',)
+
     fieldsets = [
         ['User additional data' , {
-            'fields': ['phone_number']
+            'fields': ['id','phone_number']
         }],
         ['Authorization', {
             'fields': ['is_superuser', 'groups', 'user_permissions']
