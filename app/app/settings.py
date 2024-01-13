@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'event',
     'users',
     'drf_yasg',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
