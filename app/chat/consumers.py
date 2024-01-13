@@ -2,8 +2,9 @@ import json
 from asgiref.sync import sync_to_async
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
-from chat.models import ChatRoom
+from chat.models import ChatRoom, Message
 from django.core.exceptions import PermissionDenied
+
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -17,8 +18,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
             return
 
         if connected_user not in await database_sync_to_async(list)(self.room.members.all()):
-            raise PermissionDenied("You are not allowed to access this chat room.")
-
+            raise PermissionDenied(
+                "You are not allowed to access this chat room.")
 
         # Join room group
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
@@ -32,6 +33,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
     # Receive message from WebSocket
     async def receive(self, text_data):
         self.user_id = self.scope["user"].id
+
+        room = await database_sync_to_async(ChatRoom.objects.get)(pk=self.room_name)
+
+        message_obj = Message(
+            user=self.scope["user"],
+            content=text_data,
+            room=room
+        )
+        await sync_to_async(message_obj.save)()
+        
         # Send message to room group
         await self.channel_layer.group_send(
             self.room_group_name, {
@@ -47,4 +58,3 @@ class ChatConsumer(AsyncWebsocketConsumer):
         user_id = str(connected_user_model.id)
         # Send message to WebSocket
         await self.send(text_data=json.dumps({"message": message, "user_id": user_id}))
-

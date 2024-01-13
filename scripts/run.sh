@@ -13,6 +13,8 @@ while ! nc -z -w 1 postgres 5432; do
 done
 
 python manage.py makemigrations users
+python manage.py makemigrations chat
+python manage.py makemigrations event
 python manage.py makemigrations
 python manage.py migrate
 

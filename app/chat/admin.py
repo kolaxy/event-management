@@ -10,3 +10,7 @@ class ChatRoomAdmin(admin.ModelAdmin):
         return output
     
     show_members.short_description = 'Members of the chat room'
+
+@admin.register(Message)
+class MessageAdmin(admin.ModelAdmin):
+    list_display = ('user', 'room', 'id', 'created_at')
