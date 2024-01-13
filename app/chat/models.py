@@ -39,11 +39,9 @@ class ChatRoom(models.Model):
         primary_key=True,
         default=uuid.uuid4,
         editable=False,
-        unique=True)
-    members = models.ManyToManyField(User, related_name='chat_rooms',
-                                     validators=[validate_max_members],
-                                     limit_choices_to={'is_active': True},
-                                     help_text='Select 2 members')
+        unique=True
+    )
+    members = models.ManyToManyField(User, related_name='chat_rooms')
     created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     class Meta:
@@ -51,3 +49,7 @@ class ChatRoom(models.Model):
 
     def __str__(self) -> str:
         return str(self.id)
+
+    def clean(self):
+        if self.members.count() != 2:
+            raise ValidationError('You must select exactly 2 members for a chat room.')
