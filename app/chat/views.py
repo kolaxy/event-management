@@ -1,19 +1,23 @@
 from rest_framework import generics, permissions
 from .models import ChatRoom, Message
-from .serializers import ChatRoomSerializer, MessageSerializer
+from .serializers import ChatRoomSerializer
+from users.models import User
+
 
 class ChatRoomDetailView(generics.RetrieveAPIView):
     serializer_class = ChatRoomSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_object(self):
-        # Try to get the chat room for the current user, create if not exists
-        chat_room, created = ChatRoom.objects.get_or_create(members=self.request.user)
+        reciever_id = self.kwargs.get('room_name')
+        self.reciever = User.objects.get(id=reciever_id)
 
-        # Fetch all messages related to the chat room
-        messages = Message.objects.filter(room=chat_room)
+        chat_room = ChatRoom.objects.filter(
+            members__in=[self.request.user, self.reciever]
+        ).first()
 
-        # Attach the messages to the chat room object
-        chat_room.messages = messages
+        if not chat_room:
+            chat_room = ChatRoom.objects.create()
+            chat_room.members.add(self.request.user, self.reciever)
 
         return chat_room
