@@ -3,18 +3,18 @@ from django.contrib import admin
 from event.models import Event, Organization
 
 
-
 @admin.register(Organization)
 class OrganizationAdmin(admin.ModelAdmin):
-    list_display = ("title", "description")
+    list_display = ("id", "title", "description")
     search_fields = ("title", "description")
+
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ("title", "description", "date", "preview_image")
+    list_display = ("id", "title", "description", "date", "preview_image")
     search_fields = ("title", "description", "date")
     list_filter = ("date", "organizations")
-    
+
     def preview_image(self, obj):
         if obj.image:
             return format_html(f'<img src="{obj.image.url}" width="25" height="25" />')
@@ -39,5 +39,3 @@ class EventAdmin(admin.ModelAdmin):
             'fields': ('image', 'display_image'),
         }),
     )
-
-

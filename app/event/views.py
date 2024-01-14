@@ -1,13 +1,17 @@
 import datetime
+import os
 from django.shortcuts import render
 from django.utils import timezone
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.filters import OrderingFilter, SearchFilter
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from event.tasks import create_event_with_delay
 from .models import Organization, Event
 from .serializers import OrganizationSerializer, EventSerializer
+
+CELERY_WAIT_TIME = os.getenv('CELERY_WAIT_TIME')
 
 class OrganizationCreateView(generics.CreateAPIView):
     queryset = Organization.objects.all()
@@ -18,7 +22,13 @@ class EventCreateView(generics.CreateAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
     permission_classes = [IsAuthenticated]
-
+    
+    def create(self, request, *args, **kwargs):
+        event_data = self.request.data
+        create_event_with_delay.apply_async((event_data,), countdown=int(CELERY_WAIT_TIME))
+        response_msg = f'Event was accepted. Wait for {str(CELERY_WAIT_TIME)} seconds.'
+        return Response({'message': response_msg}, status=status.HTTP_202_ACCEPTED)
+    
 class CustomEventPagination(PageNumberPagination):
     page_size = 5
     page_size_query_param = 'page_size'
