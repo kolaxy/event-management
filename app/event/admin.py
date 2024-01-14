@@ -5,9 +5,13 @@ from event.models import Event, Organization
 
 @admin.register(Organization)
 class OrganizationAdmin(admin.ModelAdmin):
-    list_display = ("id", "title", "description")
+    list_display =  ("title", "members_count","founder", "description", "founder", "id")
     search_fields = ("title", "description")
 
+    def members_count(self, obj):
+        return obj.members.count() + 1
+    
+    members_count.short_description = "Members count include admin"
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
