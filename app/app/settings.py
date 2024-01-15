@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import datetime
 import os
 from pathlib import Path
 
@@ -182,6 +183,92 @@ CHANNEL_LAYERS = {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
             "hosts": [(os.environ.get("REDIS_HOST"), os.environ.get("REDIS_PORT"))],
+        },
+    },
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s|%(asctime)s|%(module)s|%(process)d|%(thread)d|%(message)s',
+            'datefmt': "%d/%b/%Y %H:%M:%S"
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+        'info_file': {
+            'level': 'INFO',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': f"{BASE_DIR}/logs/info/info_{datetime.datetime.now().strftime('%Y-%m-%d')}.log",
+            'when': 'midnight',
+            'backupCount': 100,
+            'formatter': 'verbose',
+            'interval': 1,
+            'delay': True,
+        },
+        'warning_file': {
+            'level': 'WARNING',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': f"{BASE_DIR}/logs/warning/warning_{datetime.datetime.now().strftime('%Y-%m-%d')}.log",
+            'when': 'midnight',
+            'backupCount': 100,
+            'formatter': 'verbose',
+            'interval': 1,
+            'delay': True,
+        },
+        'error_file': {
+            'level': 'ERROR',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': f"{BASE_DIR}/logs/error/error_{datetime.datetime.now().strftime('%Y-%m-%d')}.log",
+            'when': 'midnight',
+            'backupCount': 100,
+            'formatter': 'verbose',
+            'interval': 1,
+            'delay': True,
+        },
+        'critical_file': {
+            'level': 'CRITICAL',
+            'class': 'logging.handlers.TimedRotatingFileHandler',
+            'filename': f"{BASE_DIR}/logs/critical/critical_{datetime.datetime.now().strftime('%Y-%m-%d')}.log",
+            'when': 'midnight',
+            'backupCount': 100,
+            'formatter': 'verbose',
+            'interval': 1,
+            'delay': True,
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'info_file', 'warning_file', 'error_file', 'critical_file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'django.request': {
+            'handlers': ['console', 'info_file', 'warning_file', 'error_file', 'critical_file', 'mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'django.security': {
+            'handlers': ['console', 'info_file', 'warning_file', 'error_file', 'critical_file', 'mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'py.warnings': {
+            'handlers': ['console'],
+        },
+        'django.server': {
+            'handlers': ['console', 'info_file', 'warning_file', 'error_file', 'critical_file'],
+            'level': 'INFO',
+            'propagate': True,
         },
     },
 }
