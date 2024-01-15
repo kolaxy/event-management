@@ -23,7 +23,7 @@ RUN python -m venv /py && \
     chmod -R 755 /app && \
     chmod -R +x /scripts && \
     chown -R djuser:djuser /start-celeryworker && \
-    chown -R djuser:djuser /app/event/migrations/ && \
+    # chown -R djuser:djuser /app/event/migrations/ && \
     sed -i 's/\r$//g' /start-celeryworker && \
     chmod +x /start-celeryworker 
 
