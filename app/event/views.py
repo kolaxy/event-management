@@ -30,10 +30,31 @@ class EventCreateView(generics.CreateAPIView):
     
     def create(self, request, *args, **kwargs):
         event_data = self.request.data
-        create_event_with_delay.apply_async((event_data,), countdown=int(CELERY_WAIT_TIME))
-        response_msg = f'Event was accepted. Wait for {str(CELERY_WAIT_TIME)} seconds.'
-        return Response({'message': response_msg}, status=status.HTTP_202_ACCEPTED)
-    
+        required_fields = ("description", "date", "title", "organization", "image")
+        
+        if all(field in event_data for field in required_fields):
+            organization_id = event_data.get("organization")
+            
+            try:
+                organization = Organization.objects.get(id=organization_id, founder=self.request.user)
+            except Organization.DoesNotExist:
+                return Response({"message": "Invalid organization or you are not founder."}, status=status.HTTP_400_BAD_REQUEST)
+
+            data_for_celery_task = {
+                "description": event_data.get("description"),
+                "date": event_data.get("date"),
+                "title": event_data.get("title"),
+            }
+            
+            data_for_celery_task["organizations"] = [organization.id]
+            create_event_with_delay.apply_async((data_for_celery_task,), countdown=int(CELERY_WAIT_TIME))
+
+            response_msg = f'Event was accepted. Wait for {str(CELERY_WAIT_TIME)} seconds.'
+            return Response({'message': response_msg}, status=status.HTTP_202_ACCEPTED)
+        else:
+            return Response({"message": "organization, description, date, title fields needed"}, status=status.HTTP_400_BAD_REQUEST)
+
+
 class CustomEventPagination(PageNumberPagination):
     page_size = 5
     page_size_query_param = 'page_size'
