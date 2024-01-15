@@ -2,6 +2,8 @@ version: "3.9"
 
 volumes:
   event_postgres_data: {}
+  grafana_storage: {}
+  prometheus_data: {}
 
 networks:
   event-link:
@@ -71,3 +73,29 @@ services:
       - event-link
     depends_on:
       - celeryworker
+
+  grafana:
+    image: grafana/grafana-enterprise
+    container_name: grafana
+    restart: unless-stopped
+    environment:
+      - GF_LOG_LEVEL=debug
+    ports:
+      - '3000:3000'
+    volumes:
+      - 'grafana_storage:/var/lib/grafana'
+    networks:
+      - event-link
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - '9090:9090'
+    command: 
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--web.enable-lifecycle'
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    networks:
+      - event-link
