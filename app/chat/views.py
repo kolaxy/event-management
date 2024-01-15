@@ -1,4 +1,5 @@
-from rest_framework import generics, permissions
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 from .models import ChatRoom, Message
 from .serializers import ChatRoomSerializer
 from users.models import User
@@ -6,7 +7,7 @@ from users.models import User
 
 class ChatRoomDetailView(generics.RetrieveAPIView):
     serializer_class = ChatRoomSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get_object(self):
         reciever_id = self.kwargs.get('room_name')

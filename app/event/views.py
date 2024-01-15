@@ -7,9 +7,10 @@ from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from event.tasks import create_event_with_delay
 from .models import Organization, Event
-from .serializers import OrganizationSerializer, EventSerializer
+from .serializers import OrganizationSerializer, EventSerializer, EventCreateSerializer
 
 CELERY_WAIT_TIME = os.getenv('CELERY_WAIT_TIME')
 
@@ -57,3 +58,14 @@ class EventListView(generics.ListAPIView):
                 return Response({'error': 'Invalid date format'}, status=400)
 
         return queryset
+    
+
+class EventDetailView(generics.RetrieveAPIView):
+    serializer_class = EventCreateSerializer
+    permission_classes = [IsAuthenticated]
+    queryset = Event.objects.all()
+
+    def get_object(self):
+        event_id = self.kwargs.get('pk')
+        event = Event.objects.get(id=event_id)
+        return event
