@@ -1,4 +1,4 @@
-[main](https://github.com/kolaxy/event-management/actions/workflows/main.yml/badge.svg)
+![main](https://github.com/kolaxy/event-management/actions/workflows/main.yml/badge.svg)
 
 # Event Management System
 
