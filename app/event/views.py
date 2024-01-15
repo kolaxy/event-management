@@ -23,6 +23,28 @@ class OrganizationCreateView(generics.CreateAPIView):
 
     permission_classes = [IsAuthenticated]
 
+class OrganizationDetailView(generics.RetrieveAPIView):
+    serializer_class = OrganizationSerializer
+    permission_classes = [IsAuthenticated]
+    queryset = Organization.objects.all()
+
+    def get_object(self):
+        organization_id = self.kwargs.get('pk')
+        event = Organization.objects.get(id=organization_id)
+        return event
+    
+    def put(self, request, *args, **kwargs):
+        organization = self.get_object()
+        organization.members.add(self.request.user)
+        organization.save()
+        serializer = self.get_serializer(organization)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+        
+class OrganizationListView(generics.ListAPIView):
+    queryset = Event.objects.all()
+    serializer_class = OrganizationSerializer
+    permission_classes = [IsAuthenticated]
+
 class EventCreateView(generics.CreateAPIView):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
@@ -53,7 +75,6 @@ class EventCreateView(generics.CreateAPIView):
             return Response({'message': response_msg}, status=status.HTTP_202_ACCEPTED)
         else:
             return Response({"message": "organization, description, date, title fields needed"}, status=status.HTTP_400_BAD_REQUEST)
-
 
 class CustomEventPagination(PageNumberPagination):
     page_size = 5
