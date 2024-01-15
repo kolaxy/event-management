@@ -1,3 +1,5 @@
+[main](https://github.com/kolaxy/event-management/actions/workflows/main.yml/badge.svg)
+
 # Event Management System
 
 A Django REST API that allows users to create organizations, events and send text messages via WebSocket. Auth system - JWT. Grafana for monitoring.
