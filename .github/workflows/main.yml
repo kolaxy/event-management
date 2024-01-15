@@ -29,8 +29,8 @@ jobs:
     - name: Start Services and Run Tests
       run: |
         export DOCKER_BUILDKIT=1
-        docker-compose up -d --scale grafana=0 --scale prometheus=0
-
+        docker-compose up -d
+        docker-compose run django python manage.py test
 
     - name: Clean up
       run: docker-compose -f down
