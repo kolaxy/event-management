@@ -2,5 +2,6 @@
 __pycache__
 *.pyc
 app/vol/
+app/logs/
 *.log
 .coverage

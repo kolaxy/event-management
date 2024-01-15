@@ -187,6 +187,26 @@ CHANNEL_LAYERS = {
     },
 }
 
+LOG_DIR = os.path.join(BASE_DIR, 'logs')  # Set your log directory as needed
+
+# Ensure the log directory exists
+if not os.path.exists(LOG_DIR):
+    os.makedirs(LOG_DIR)
+
+INFO_LOG_DIR = os.path.join(LOG_DIR, 'info')
+WARNING_LOG_DIR = os.path.join(LOG_DIR, 'warning')
+ERROR_LOG_DIR = os.path.join(LOG_DIR, 'error')
+CRITICAL_LOG_DIR = os.path.join(LOG_DIR, 'critical')
+
+if not os.path.exists(INFO_LOG_DIR):
+    os.makedirs(INFO_LOG_DIR)
+if not os.path.exists(WARNING_LOG_DIR):
+    os.makedirs(WARNING_LOG_DIR)
+if not os.path.exists(ERROR_LOG_DIR):
+    os.makedirs(ERROR_LOG_DIR)
+if not os.path.exists(CRITICAL_LOG_DIR):
+    os.makedirs(CRITICAL_LOG_DIR)
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,

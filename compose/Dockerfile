@@ -18,12 +18,13 @@ RUN python -m venv /py && \
         build-base postgresql-dev linux-headers && \
     /py/bin/pip install -r /requirements.txt --use-pep517 && \
     adduser --disabled-password --gecos '' djuser && \
-    mkdir -p /app/vol/ && \
     chown -R djuser:djuser /app && \
+    mkdir -p /app/vol && \
+    mkdir -p /app/vol /app/logs/info /app/logs/warning /app/logs/error /app/logs/critical && \
     chmod -R 755 /app && \
+    chmod -R a+rw /app/logs/info /app/logs/warning /app/logs/error /app/logs/critical && \
     chmod -R +x /scripts && \
     chown -R djuser:djuser /start-celeryworker && \
-    # chown -R djuser:djuser /app/event/migrations/ && \
     sed -i 's/\r$//g' /start-celeryworker && \
     chmod +x /start-celeryworker 
 
