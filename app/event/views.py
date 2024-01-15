@@ -10,13 +10,17 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from event.tasks import create_event_with_delay
 from .models import Organization, Event
-from .serializers import OrganizationSerializer, EventSerializer, EventCreateSerializer
+from .serializers import OrganizationSerializer, OrganizationCreateSerializer, EventSerializer, EventCreateSerializer
 
 CELERY_WAIT_TIME = os.getenv('CELERY_WAIT_TIME')
 
 class OrganizationCreateView(generics.CreateAPIView):
     queryset = Organization.objects.all()
-    serializer_class = OrganizationSerializer
+    serializer_class = OrganizationCreateSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(founder=self.request.user)
+
     permission_classes = [IsAuthenticated]
 
 class EventCreateView(generics.CreateAPIView):

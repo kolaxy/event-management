@@ -9,6 +9,11 @@ class OrganizationSerializer(serializers.ModelSerializer):
         model = Organization
         fields = '__all__'
 
+class OrganizationCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Organization
+        fields = ('title', 'description', 'address', 'postcode')
+
 class EventSerializer(serializers.ModelSerializer):
     organizations = serializers.SerializerMethodField()
 
