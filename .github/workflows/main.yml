@@ -34,3 +34,14 @@ jobs:
 
     - name: Clean up
       run: docker-compose -f down
+
+  # deploy:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Deploy to VPS
+  #     uses: appleboy/ssh-action@master
+  #     with:
+  #       username: ${{ secrets.USERNAME }}
+  #       host: ${{ secrets.HOST }}
+  #       password: ${{ secrets.SSH_PASSWORD }}
+  #       script: 'cd /var/www/html && sh_script_to_deploy.sh'
