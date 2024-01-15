@@ -28,7 +28,7 @@ jobs:
 
     - name: Start Services and Run Tests
       run: |
-        docker-compose -f docker-compose.yml up -d
+        docker-compose -f docker-compose.yml up --scale grafana=0 --scale prometheus=0
         docker-compose -f docker-compose.yml exec django python manage.py test
 
     - name: Clean up
