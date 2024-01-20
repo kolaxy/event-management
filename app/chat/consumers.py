@@ -2,7 +2,7 @@ import json
 from asgiref.sync import sync_to_async
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
-from chat.models import ChatRoom, Message
+from .models import ChatRoom, Message
 from django.core.exceptions import PermissionDenied
 
 
@@ -12,14 +12,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = "chat_%s" % self.room_name
         try:
-            self.room = await database_sync_to_async(ChatRoom.objects.get)(pk=self.room_name)
+            self.room = await database_sync_to_async(ChatRoom.objects.get)(
+                pk=self.room_name
+            )
         except:
             await self.close()
             return
 
-        if connected_user not in await database_sync_to_async(list)(self.room.members.all()):
-            raise PermissionDenied(
-                "You are not allowed to access this chat room.")
+        if connected_user not in await database_sync_to_async(list)(
+            self.room.members.all()
+        ):
+            raise PermissionDenied("You are not allowed to access this chat room.")
 
         # Join room group
         await self.channel_layer.group_add(self.room_group_name, self.channel_name)
@@ -36,19 +39,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         room = await database_sync_to_async(ChatRoom.objects.get)(pk=self.room_name)
 
-        message_obj = Message(
-            user=self.scope["user"],
-            content=text_data,
-            room=room
-        )
+        message_obj = Message(user=self.scope["user"], content=text_data, room=room)
         await sync_to_async(message_obj.save)()
-        
+
         # Send message to room group
         await self.channel_layer.group_send(
-            self.room_group_name, {
+            self.room_group_name,
+            {
                 "type": "chat_message",
                 "message": text_data,
-                "user_id": str(self.user_id)}
+                "user_id": str(self.user_id),
+            },
         )
 
     # Receive message from room group

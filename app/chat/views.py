@@ -10,7 +10,7 @@ class ChatRoomDetailView(generics.RetrieveAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
-        reciever_id = self.kwargs.get('room_name')
+        reciever_id = self.kwargs.get("room_name")
         self.reciever = User.objects.get(id=reciever_id)
 
         chat_room = ChatRoom.objects.filter(

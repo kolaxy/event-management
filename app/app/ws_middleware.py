@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 from urllib.parse import parse_qs
 from channels.db import database_sync_to_async
 
+
 class TokenAuthMiddleware:
     """
     Custom token auth middleware
@@ -34,7 +35,9 @@ class TokenAuthMiddleware:
         else:
             # Then the token is valid, decode it
             decoded_data = jwt_decode(token, settings.SECRET_KEY, algorithms=["HS256"])
-            user = await database_sync_to_async(get_user_model().objects.get)(id=decoded_data["user_id"])
+            user = await database_sync_to_async(get_user_model().objects.get)(
+                id=decoded_data["user_id"]
+            )
 
         # Return the inner application directly and let it run everything else
         return await self.inner(dict(scope, user=user), receive, send, *args, **kwargs)

@@ -24,77 +24,77 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-zx=^3@aez5m(p#-5-ee1!x#psvjt_d*y^0ryn5e&#c587011g6'
+SECRET_KEY = "django-insecure-zx=^3@aez5m(p#-5-ee1!x#psvjt_d*y^0ryn5e&#c587011g6"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    'daphne',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'rest_framework',
-    'django_prometheus',
-    'event',
-    'users',
-    'chat',
-    'drf_yasg',
-    'rest_framework_simplejwt',
+    "daphne",
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "rest_framework",
+    "django_prometheus",
+    "event",
+    "users",
+    "chat",
+    "drf_yasg",
+    "rest_framework_simplejwt",
 ]
 
 MIDDLEWARE = [
-    'django_prometheus.middleware.PrometheusBeforeMiddleware',
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django_prometheus.middleware.PrometheusAfterMiddleware',
+    "django_prometheus.middleware.PrometheusBeforeMiddleware",
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django_prometheus.middleware.PrometheusAfterMiddleware",
 ]
 
-ROOT_URLCONF = 'app.urls'
+ROOT_URLCONF = "app.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'app.wsgi.application'
+WSGI_APPLICATION = "app.wsgi.application"
 
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'HOST': os.getenv('POSTGRES_HOST'),
-        'PORT': os.getenv('POSTGRES_PORT'),
-        'NAME': os.getenv('POSTGRES_DB'),
-        'USER': os.getenv('POSTGRES_USER'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "HOST": os.getenv("POSTGRES_HOST"),
+        "PORT": os.getenv("POSTGRES_PORT"),
+        "NAME": os.getenv("POSTGRES_DB"),
+        "USER": os.getenv("POSTGRES_USER"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
     }
 }
 
@@ -104,16 +104,16 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -121,9 +121,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -133,53 +133,53 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = "static/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-app = Celery('app')
-app.config_from_object('django.conf:settings', namespace='CELERY')
+app = Celery("app")
+app.config_from_object("django.conf:settings", namespace="CELERY")
 app.autodiscover_tasks()
 
 CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-        'LOCATION': os.getenv('REDIS_URL'),
-        'OPTIONS': {
-            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": os.getenv("REDIS_URL"),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "IGNORE_EXCEPTIONS": True,
         },
     },
 }
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'vol/')
-MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "vol/")
+MEDIA_URL = "/media/"
 
-BROKER_URL = os.getenv('REDIS_URL')
-CELERY_RESULT_BACKEND = os.getenv('REDIS_URL')
-CELERY_ACCEPT_CONTENT = ['application/json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
-CELERY_TIMEZONE = os.getenv('CELERY_TIMEZONE')
+BROKER_URL = os.getenv("REDIS_URL")
+CELERY_RESULT_BACKEND = os.getenv("REDIS_URL")
+CELERY_ACCEPT_CONTENT = ["application/json"]
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_TIMEZONE = os.getenv("CELERY_TIMEZONE")
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
 }
 
 AUTH_USER_MODEL = "users.User"
 
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USERNAME_REQUIRED = False
 
-ASGI_APPLICATION = 'app.asgi.application'
+ASGI_APPLICATION = "app.asgi.application"
 
 CHANNEL_LAYERS = {
     "default": {
@@ -190,16 +190,16 @@ CHANNEL_LAYERS = {
     },
 }
 
-LOG_DIR = os.path.join(BASE_DIR, 'logs')  # Set your log directory as needed
+LOG_DIR = os.path.join(BASE_DIR, "logs")  # Set your log directory as needed
 
 # Ensure the log directory exists
 if not os.path.exists(LOG_DIR):
     os.makedirs(LOG_DIR)
 
-INFO_LOG_DIR = os.path.join(LOG_DIR, 'info')
-WARNING_LOG_DIR = os.path.join(LOG_DIR, 'warning')
-ERROR_LOG_DIR = os.path.join(LOG_DIR, 'error')
-CRITICAL_LOG_DIR = os.path.join(LOG_DIR, 'critical')
+INFO_LOG_DIR = os.path.join(LOG_DIR, "info")
+WARNING_LOG_DIR = os.path.join(LOG_DIR, "warning")
+ERROR_LOG_DIR = os.path.join(LOG_DIR, "error")
+CRITICAL_LOG_DIR = os.path.join(LOG_DIR, "critical")
 
 if not os.path.exists(INFO_LOG_DIR):
     os.makedirs(INFO_LOG_DIR)
@@ -211,87 +211,113 @@ if not os.path.exists(CRITICAL_LOG_DIR):
     os.makedirs(CRITICAL_LOG_DIR)
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'verbose': {
-            'format': '%(levelname)s|%(asctime)s|%(module)s|%(process)d|%(thread)d|%(message)s',
-            'datefmt': "%d/%b/%Y %H:%M:%S"
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "%(levelname)s|%(asctime)s|%(module)s|%(process)d|%(thread)d|%(message)s",
+            "datefmt": "%d/%b/%Y %H:%M:%S",
         },
     },
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'formatter': 'verbose',
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
         },
-        'info_file': {
-            'level': 'INFO',
-            'class': 'logging.handlers.TimedRotatingFileHandler',
-            'filename': f"{BASE_DIR}/logs/info/info_{datetime.datetime.now().strftime('%Y-%m-%d')}.log",
-            'when': 'midnight',
-            'backupCount': 100,
-            'formatter': 'verbose',
-            'interval': 1,
-            'delay': True,
+        "info_file": {
+            "level": "INFO",
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "filename": f"{BASE_DIR}/logs/info/info_{datetime.datetime.now().strftime('%Y-%m-%d')}.log",
+            "when": "midnight",
+            "backupCount": 100,
+            "formatter": "verbose",
+            "interval": 1,
+            "delay": True,
         },
-        'warning_file': {
-            'level': 'WARNING',
-            'class': 'logging.handlers.TimedRotatingFileHandler',
-            'filename': f"{BASE_DIR}/logs/warning/warning_{datetime.datetime.now().strftime('%Y-%m-%d')}.log",
-            'when': 'midnight',
-            'backupCount': 100,
-            'formatter': 'verbose',
-            'interval': 1,
-            'delay': True,
+        "warning_file": {
+            "level": "WARNING",
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "filename": f"{BASE_DIR}/logs/warning/warning_{datetime.datetime.now().strftime('%Y-%m-%d')}.log",
+            "when": "midnight",
+            "backupCount": 100,
+            "formatter": "verbose",
+            "interval": 1,
+            "delay": True,
         },
-        'error_file': {
-            'level': 'ERROR',
-            'class': 'logging.handlers.TimedRotatingFileHandler',
-            'filename': f"{BASE_DIR}/logs/error/error_{datetime.datetime.now().strftime('%Y-%m-%d')}.log",
-            'when': 'midnight',
-            'backupCount': 100,
-            'formatter': 'verbose',
-            'interval': 1,
-            'delay': True,
+        "error_file": {
+            "level": "ERROR",
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "filename": f"{BASE_DIR}/logs/error/error_{datetime.datetime.now().strftime('%Y-%m-%d')}.log",
+            "when": "midnight",
+            "backupCount": 100,
+            "formatter": "verbose",
+            "interval": 1,
+            "delay": True,
         },
-        'critical_file': {
-            'level': 'CRITICAL',
-            'class': 'logging.handlers.TimedRotatingFileHandler',
-            'filename': f"{BASE_DIR}/logs/critical/critical_{datetime.datetime.now().strftime('%Y-%m-%d')}.log",
-            'when': 'midnight',
-            'backupCount': 100,
-            'formatter': 'verbose',
-            'interval': 1,
-            'delay': True,
+        "critical_file": {
+            "level": "CRITICAL",
+            "class": "logging.handlers.TimedRotatingFileHandler",
+            "filename": f"{BASE_DIR}/logs/critical/critical_{datetime.datetime.now().strftime('%Y-%m-%d')}.log",
+            "when": "midnight",
+            "backupCount": 100,
+            "formatter": "verbose",
+            "interval": 1,
+            "delay": True,
         },
-        'mail_admins': {
-            'level': 'ERROR',
-            'class': 'django.utils.log.AdminEmailHandler',
+        "mail_admins": {
+            "level": "ERROR",
+            "class": "django.utils.log.AdminEmailHandler",
         },
     },
-    'loggers': {
-        'django': {
-            'handlers': ['console', 'info_file', 'warning_file', 'error_file', 'critical_file'],
-            'level': 'INFO',
-            'propagate': True,
+    "loggers": {
+        "django": {
+            "handlers": [
+                "console",
+                "info_file",
+                "warning_file",
+                "error_file",
+                "critical_file",
+            ],
+            "level": "INFO",
+            "propagate": True,
         },
-        'django.request': {
-            'handlers': ['console', 'info_file', 'warning_file', 'error_file', 'critical_file', 'mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
+        "django.request": {
+            "handlers": [
+                "console",
+                "info_file",
+                "warning_file",
+                "error_file",
+                "critical_file",
+                "mail_admins",
+            ],
+            "level": "ERROR",
+            "propagate": True,
         },
-        'django.security': {
-            'handlers': ['console', 'info_file', 'warning_file', 'error_file', 'critical_file', 'mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
+        "django.security": {
+            "handlers": [
+                "console",
+                "info_file",
+                "warning_file",
+                "error_file",
+                "critical_file",
+                "mail_admins",
+            ],
+            "level": "ERROR",
+            "propagate": True,
         },
-        'py.warnings': {
-            'handlers': ['console'],
+        "py.warnings": {
+            "handlers": ["console"],
         },
-        'django.server': {
-            'handlers': ['console', 'info_file', 'warning_file', 'error_file', 'critical_file'],
-            'level': 'INFO',
-            'propagate': True,
+        "django.server": {
+            "handlers": [
+                "console",
+                "info_file",
+                "warning_file",
+                "error_file",
+                "critical_file",
+            ],
+            "level": "INFO",
+            "propagate": True,
         },
     },
 }
